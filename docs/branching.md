@@ -1,5 +1,22 @@
 # Branching & Merging
 
+## Why Branches?
+
+In a shared codebase, `main` (or `master`) should always be in a working, deployable state. If everyone committed directly to `main`, any in-progress feature or broken experiment would immediately break the project for the whole team.
+
+Branches solve this by giving each developer (or each feature/fix) a **separate line of development**. Work happens in isolation, and changes are only merged back when they're complete and reviewed. This enables:
+
+- **Parallel development** — multiple features in flight simultaneously without conflict.
+- **Safe experimentation** — try a new approach on a branch; if it fails, delete the branch and nothing is lost.
+- **Code review** — open a Pull Request from a branch, get feedback, then merge — keeping history clean and intentional.
+- **Release management** — maintain stable `release/x.x` branches while `main` continues forward.
+
+## Why Merge?
+
+Once work on a branch is complete, it needs to be brought back into the shared history. Merging creates a point in history where two lines of development come together. The **merge commit** is explicit evidence that the feature was reviewed and integrated, making it easy to audit or revert an entire feature in one step with `git revert <merge-commit>`.
+
+---
+
 Branches let you work on features or fixes in isolation without affecting the main codebase.
 
 ---

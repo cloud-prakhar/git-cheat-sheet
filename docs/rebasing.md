@@ -1,5 +1,24 @@
 # Rebasing
 
+## Why Rebase?
+
+When you work on a feature branch for a few days, `main` keeps moving forward as teammates merge their work. Eventually your branch and `main` diverge. You have two options to reconcile them: **merge** or **rebase**.
+
+**Merge** creates a merge commit that joins the two histories. It's accurate but can litter the log with "Merge branch 'main' into feature/x" commits that add noise and make `git log` hard to follow.
+
+**Rebase** takes your commits and *replays* them one by one on top of the current tip of `main`, as if you had started your branch from there today. The result is a perfectly linear history — no merge commits, no forks in the graph — that's much easier to read, bisect, and reason about.
+
+**When to use rebase:**
+- Keeping a long-lived feature branch up to date with `main` before merging.
+- Cleaning up a messy local commit history (fix typos, squash WIP commits) before opening a PR.
+- Producing a tidy, linear `git log` that reads like a coherent story.
+
+**When NOT to use rebase:**
+- On branches other people are working on — rebase rewrites commit hashes, which breaks everyone else's clone of that branch.
+- When you want to preserve the exact topology of how development happened.
+
+---
+
 Rebase replays your commits on top of another branch, producing a clean linear history instead of a merge commit. It's commonly used to keep feature branches up to date with `main`.
 
 ---

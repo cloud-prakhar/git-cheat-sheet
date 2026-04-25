@@ -21,6 +21,7 @@ A practical, no-fluff Git reference covering essential commands, workflows, and 
 | 11 | [Debugging](docs/debugging.md) | bisect, blame, log -S, log -L |
 | 12 | [Workflows](docs/workflows.md) | fork/PR flow, feature branch flow |
 | 13 | [Advanced](docs/advanced.md) | cherry-pick, worktrees, submodules, one-liners |
+| 14 | [Production Best Practices](docs/production.md) | branch protection, signing, secrets, hotfix, release tagging |
 
 ---
 

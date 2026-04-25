@@ -1,5 +1,26 @@
 # Basics
 
+## Why Git?
+
+Every software project changes over time. Without version control, you're left with manual backups (`auth_v2_final_FINAL.js`), no way to trace who changed what or why, and no safe way to experiment. Git solves this by recording every change as a **commit** — a permanent, addressable snapshot of your project at a point in time.
+
+Key reasons Git is the standard:
+
+- **History** — every change is recorded, attributable, and reversible.
+- **Collaboration** — multiple developers can work on the same codebase without overwriting each other.
+- **Branching** — you can experiment or develop features in complete isolation, then merge when ready.
+- **Distributed** — every developer has a full copy of the repo; there's no single point of failure.
+
+## Why Stage Changes Separately?
+
+Most version control systems commit the entire working directory at once. Git's **staging area** (the index) sits between your working directory and the commit. This lets you:
+
+- Bundle only related changes into one commit, even if your working directory has unrelated edits in progress.
+- Review exactly what you're about to commit before it becomes permanent.
+- Split a messy session of edits into clean, logical commits that are easy to review and bisect.
+
+---
+
 Core everyday commands: creating repos, checking status, staging, and committing.
 
 ---

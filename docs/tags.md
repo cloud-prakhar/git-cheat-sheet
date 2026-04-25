@@ -1,5 +1,20 @@
 # Tags
 
+## Why Tags?
+
+Branches are **moving** pointers — `main` advances with every commit. You need a way to permanently mark a specific commit as a release milestone so that it's always findable, even after hundreds of subsequent commits.
+
+Tags are **permanent** pointers. Once you tag a commit as `v2.0.0`, that tag always refers to exactly that snapshot, no matter how much `main` moves forward. This is essential for:
+
+- **Reproducible builds** — `git checkout v1.4.2` gives you the exact source that shipped.
+- **Release notes** — CI/CD pipelines can trigger deployments when a new tag is pushed, without needing branch logic.
+- **Hotfix branching** — if a production bug is reported against `v1.4.2`, you branch from the tag: `git checkout -b hotfix/v1.4.3 v1.4.2`.
+- **Auditing** — annotated tags carry a message, tagger identity, and date — a permanent record of who cut the release and when.
+
+Annotated tags are preferred over lightweight tags for releases because they are stored as full Git objects with metadata. Lightweight tags are just a name pointing to a commit with no extra information.
+
+---
+
 Tags mark specific points in history — most commonly used for release versions (v1.0.0, v2.3.1).
 
 ---

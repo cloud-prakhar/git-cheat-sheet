@@ -1,5 +1,19 @@
 # Undoing Changes
 
+## Why Multiple Undo Tools?
+
+Mistakes happen at different stages of the Git workflow — you might catch an error immediately after typing, or only after pushing to `main`. Git's undo tools are designed for exactly this spectrum:
+
+- **You haven't staged yet** — `git restore` discards the working-directory change.
+- **You staged but haven't committed** — `git restore --staged` moves it back to the working directory.
+- **You committed locally** — `git reset` moves the branch pointer backward (safe only before pushing).
+- **You pushed to a shared branch** — `git revert` creates a new commit that reverses the change, without rewriting history that others may have pulled.
+- **You thought everything was lost** — `git reflog` records every HEAD movement as a recovery trail.
+
+The key principle: **rewriting history (`reset`, `rebase`) is only safe before you've shared the commits**. Once commits are on a shared branch, use `revert` to undo safely — it adds to history rather than changing it, so no one else's clone breaks.
+
+---
+
 Git gives you several tools to undo work — each with different scope and safety characteristics.
 
 ---

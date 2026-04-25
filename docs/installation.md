@@ -1,5 +1,13 @@
 # Installation
 
+## Why Git?
+
+Git is the industry-standard version control system. It tracks every change to your code, lets you experiment safely on branches, collaborate with teams without overwriting each other's work, and roll back to any previous state at any time. Nearly every software project — from personal scripts to large open-source projects — uses Git.
+
+Without Git (or any VCS), the only options are manual backups, careful file naming, and hoping nothing breaks. With Git, every mistake is recoverable and every decision is documented.
+
+---
+
 ## Windows
 
 ### Option 1 — Git for Windows (recommended)

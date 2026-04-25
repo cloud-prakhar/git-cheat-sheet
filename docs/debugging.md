@@ -1,5 +1,17 @@
 # Debugging
 
+## Why Git-Based Debugging?
+
+When a bug appears in production, the first question is usually "when did this start?" and the second is "what changed?" Traditional debugging tools answer "what is the code doing now" — Git's debugging tools answer "what changed and when did it change."
+
+- **`git bisect`** is the most powerful: instead of reading code hoping to spot the bug, you tell Git a known-good and known-bad commit and it performs a binary search through the history, checking out commits for you to test. For a repo with 1,000 commits between good and bad, you'll find the culprit in at most 10 steps.
+- **`git blame`** answers "who wrote this line and when?" — not to assign blame, but to find the commit so you can read the full context of why the code was written that way.
+- **`git log -S`** (the "pickaxe") answers "when did this string or function appear or disappear from the codebase?" — essential for tracking down when a behavior changed.
+
+These tools save hours of manual reading by letting you query the full project history like a searchable database.
+
+---
+
 Tools for finding when a bug was introduced, who changed what, and which commit is responsible.
 
 ---

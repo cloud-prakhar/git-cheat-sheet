@@ -1,5 +1,19 @@
 # Collaboration Workflows
 
+## Why Workflows?
+
+Git itself is just a tool — it doesn't enforce how teams use it. Without an agreed workflow, teams end up with commits directly to `main`, broken builds, untested code reaching production, and merge conflicts that take hours to resolve.
+
+A **workflow** is a convention that the whole team follows: which branches exist, how work moves between them, and what gates (code review, CI) must pass before code reaches `main`. The workflow makes the implicit explicit, so everyone knows what to do and what to expect.
+
+**Fork & Pull Request workflow** is designed for open-source and external contributors who don't have write access to the main repo. Changes are proposed from a personal fork and reviewed before being accepted — this protects the upstream repo from untrusted or unreviewed commits.
+
+**Feature Branch workflow** is designed for teams with shared repo access. Every piece of work lives on its own branch and goes through a Pull Request for review before merging — preserving `main` as a stable, always-deployable branch.
+
+Both workflows enforce the same core principle: **`main` is protected, and nothing lands there without review.**
+
+---
+
 Two common Git workflows for working with teams.
 
 ---

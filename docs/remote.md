@@ -1,5 +1,21 @@
 # Remote Operations
 
+## Why Remote Repos?
+
+Git is a **distributed** version control system — every developer has a complete local copy of the repo and can commit, branch, and view history entirely offline. But teams need a shared, authoritative source of truth that everyone can push to and pull from. That shared copy lives on a **remote** (GitHub, GitLab, Bitbucket, or a self-hosted server).
+
+Remotes enable:
+- **Collaboration** — teammates push their branches and pull each other's work.
+- **Backup** — the remote is an off-machine copy; losing your laptop doesn't lose the project.
+- **CI/CD integration** — every push can trigger automated builds, tests, and deployments.
+- **Code review** — Pull Requests are opened against a remote, giving a central place for discussion.
+
+## Why Fetch Before Pull?
+
+`git fetch` downloads remote changes into your local repo without touching your working directory or branches. `git pull` = `git fetch` + `git merge` (or rebase). Fetching first lets you **inspect** what changed (`git log HEAD..origin/main`) before deciding how to integrate it — useful when you want `--rebase` instead of a merge commit, or when you just want to check if you're behind before starting work.
+
+---
+
 Remotes are named references to repositories hosted elsewhere (GitHub, GitLab, Bitbucket, self-hosted). `origin` is the conventional name for the repo you cloned from.
 
 ---

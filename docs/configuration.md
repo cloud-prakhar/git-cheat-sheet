@@ -1,5 +1,19 @@
 # Configuration
 
+## Why Configure Git?
+
+Out of the box, Git doesn't know who you are. Every commit records an author name and email — if you skip this step, your contributions are attributed to nothing or to whatever the OS default is, making `git blame` and `git log --author` useless for finding your own work.
+
+Beyond identity, configuration controls behavior that directly affects your workflow:
+- The **default editor** determines what opens when you write a commit message or resolve a rebase — pick one you're comfortable in, or you'll be stuck in Vim with no way out.
+- **Line ending handling** prevents Windows CRLF endings from showing up as changes in every file when collaborating cross-platform.
+- **Aliases** compress commands you run dozens of times per day (`git lg`, `git sw`) into muscle memory.
+- **Credential storage** means you authenticate once instead of on every push.
+
+Git reads config in three layers — system → global → local — and later layers override earlier ones. This lets you set personal defaults globally while overriding them for specific repos (e.g., using a work email in work repos, personal email in personal repos).
+
+---
+
 Git config has three scopes: `--system` (all users), `--global` (your user account), and local (per-repo, default). Most personal settings go in `--global`.
 
 ---

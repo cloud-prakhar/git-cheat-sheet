@@ -1,5 +1,19 @@
 # History & Diffing
 
+## Why Inspect History?
+
+Every commit in Git is a permanent, queryable record — not just of *what* changed, but of *when*, *who*, and (with good commit messages) *why*. Being able to interrogate this history is one of Git's most powerful features and separates it from just having backups.
+
+Practical reasons to dig into history:
+- **Understand a decision** — why was this code written this way? `git log -p` and `git blame` answer this without having to find the author.
+- **Audit changes** — what changed between the last two releases? `git log v1.1.0..v1.2.0` tells you in seconds.
+- **Find regressions** — a feature worked last week; `git log -S "functionName"` finds the commit that changed it.
+- **Onboard faster** — reading the history of a file tells you more about its intent than reading the code alone.
+
+`git diff` complements `git log` by showing the *content* of changes rather than just their metadata — letting you compare branches, commits, or your staged vs. unstaged work at any point.
+
+---
+
 Explore what changed, when, by whom, and why.
 
 ---

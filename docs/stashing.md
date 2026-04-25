@@ -1,5 +1,18 @@
 # Stashing
 
+## Why Stash?
+
+Git won't let you switch branches when you have uncommitted changes that would conflict with the target branch. Your options without stash are to either commit half-done work (polluting history) or discard it (losing work). Neither is acceptable.
+
+`git stash` gives you a **third option**: save the current state of your working directory and staging area to a temporary stack, revert to a clean state, and restore everything exactly as it was when you're ready to continue. It's the equivalent of putting your work-in-progress into a drawer so you can deal with something urgent on a clean desk.
+
+**Common scenarios:**
+- A critical production bug comes in while you're mid-feature — stash your work, fix the bug on `main`, then pop the stash.
+- You started work on the wrong branch — stash it, switch to the right branch, pop the stash.
+- You want to quickly test the current state of `main` without committing incomplete work.
+
+---
+
 Stash temporarily shelves your uncommitted changes so you can switch context — e.g., jump to a hotfix branch — and come back to your work later.
 
 ---
