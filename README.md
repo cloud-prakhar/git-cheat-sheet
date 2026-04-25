@@ -48,3 +48,42 @@ A practical, no-fluff Git reference covering essential commands, workflows, and 
 | Create release tag | `git tag -a v1.0.0 -m "msg"` |
 | Find bad commit | `git bisect start` |
 | Recover lost work | `git reflog` |
+
+---
+
+## References & Resources
+
+### 📐 Standards & Specifications
+
+| | Resource | Description |
+|---|----------|-------------|
+| 📝 | [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) | Specification for commit message format (`feat:`, `fix:`, `chore:`, etc.) |
+| 🔀 | [Semantic Versioning (SemVer)](https://semver.org/) | Version numbering standard used with git tags (MAJOR.MINOR.PATCH) |
+| 🔑 | [SSH Key Setup — GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) | Official guide for SSH authentication with GitHub |
+
+### 📖 Official Documentation
+
+| | Resource | Description |
+|---|----------|-------------|
+| 📘 | [Git Official Docs](https://git-scm.com/doc) | Complete reference manual and command docs |
+| 📗 | [Pro Git Book](https://git-scm.com/book/en/v2) | Free, comprehensive book covering Git from basics to internals |
+| 🐙 | [GitHub Docs](https://docs.github.com) | GitHub-specific workflows, Actions, and API reference |
+| 🦊 | [GitLab Docs](https://docs.gitlab.com) | GitLab CI/CD, merge requests, and platform guides |
+
+### 🛠️ Tools & Utilities
+
+| | Resource | Description |
+|---|----------|-------------|
+| 🖥️ | [GitLens (VS Code)](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) | Supercharged Git integration inside VS Code |
+| 🌳 | [Sourcetree](https://www.sourcetreeapp.com/) | Free visual Git client for macOS and Windows |
+| 🔍 | [git-extras](https://github.com/tj/git-extras) | Extra git commands (`git undo`, `git summary`, `git changelog`, etc.) |
+| 🧹 | [BFG Repo Cleaner](https://rtyley.github.io/bfg-repo-cleaner/) | Fast alternative to `git filter-branch` for removing secrets/large files |
+| 📊 | [git-standup](https://github.com/kamranahmedse/git-standup) | Recall what you (or your team) committed last working day |
+
+### 🎮 Interactive Learning
+
+| | Resource | Description |
+|---|----------|-------------|
+| 🌐 | [Learn Git Branching](https://learngitbranching.js.org/) | Visual, interactive git branching tutorials in the browser |
+| 🎯 | [Oh My Git!](https://ohmygit.org/) | Open-source game for learning Git visually |
+| 🧩 | [Git Katas](https://github.com/eficode-academy/git-katas) | Hands-on git exercises for deliberate practice |
