@@ -8,6 +8,39 @@ When you work on a feature branch for a few days, `main` keeps moving forward as
 
 **Rebase** takes your commits and *replays* them one by one on top of the current tip of `main`, as if you had started your branch from there today. The result is a perfectly linear history — no merge commits, no forks in the graph — that's much easier to read, bisect, and reason about.
 
+> **Real-world analogy:** Imagine you started writing notes based on page 5 of a textbook, but a new edition shifted everything to page 12. **Rebasing** is rewriting your notes as if you'd started from page 12 all along — so they slot in cleanly. **Merging** instead staples a "here's how I reconciled the two editions" page onto your notes.
+
+**Before rebase** — your branch and `main` have diverged:
+
+```mermaid
+gitGraph
+    commit id: "A"
+    commit id: "B"
+    branch feature
+    checkout feature
+    commit id: "X"
+    commit id: "Y"
+    checkout main
+    commit id: "C"
+    commit id: "D"
+```
+
+**After `git rebase main`** — your commits (`X'`, `Y'`) are replayed on top of the latest `main`, giving a straight line:
+
+```mermaid
+gitGraph
+    commit id: "A"
+    commit id: "B"
+    commit id: "C"
+    commit id: "D"
+    branch feature
+    checkout feature
+    commit id: "X'"
+    commit id: "Y'"
+```
+
+**The key thing to understand:** rebase doesn't *move* your commits — it **creates brand-new copies** with new hashes and discards the originals. In the "after" diagram below, `X` and `Y` became `X'` and `Y'`: same changes, different identity. This single fact explains everything about rebase — why history looks clean, why you must force-push afterward, and why rebasing shared commits is dangerous (everyone else still has the old `X`/`Y`, now orphaned).
+
 **When to use rebase:**
 - Keeping a long-lived feature branch up to date with `main` before merging.
 - Cleaning up a messy local commit history (fix typos, squash WIP commits) before opening a PR.
@@ -161,3 +194,14 @@ pick g7h8i9 fix: typo in error message
 | Rewrites history | Yes | No |
 | Safe for shared branches | No | Yes |
 | Best for | Cleaning up local history | Integrating shared branches |
+
+> **The Golden Rule of Rebasing:** Never rebase commits that exist outside your own machine and that people may have based work on. Rebase *local, private* commits freely; use merge for *shared, public* ones.
+
+---
+
+## References
+
+- [Pro Git — Rebasing](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) (includes "The Perils of Rebasing")
+- [git rebase — official docs](https://git-scm.com/docs/git-rebase)
+- [Atlassian — Merging vs. Rebasing](https://www.atlassian.com/git/tutorials/merging-vs-rebasing)
+- [Learn Git Branching — Rebase lessons](https://learngitbranching.js.org/)

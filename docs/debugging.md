@@ -20,6 +20,26 @@ Tools for finding when a bug was introduced, who changed what, and which commit 
 
 `bisect` performs a binary search through commit history to find the exact commit that introduced a bug. For N commits, it takes only log₂(N) steps.
 
+> **Real-world analogy:** It's the "guess the number" game. Instead of checking 1,000 commits one by one, Git jumps to the middle and asks "is the bug here?" Each answer cuts the remaining suspects in half — so 1,000 commits are narrowed down in about 10 questions.
+
+**Two things you need before you start:**
+1. **A "good" commit** — a point in the past where you *know* the bug didn't exist (often a release tag like `v1.2.0`).
+2. **A reliable test** — a clear, repeatable way to answer "is the bug here?" at each step. If the bug appears only *sometimes*, bisect will point you at the wrong commit, because your "good"/"bad" answers won't be trustworthy. Reproduce it consistently first.
+
+```mermaid
+flowchart TD
+    S["git bisect start"] --> B["git bisect bad<br/>(now is broken)"]
+    B --> G["git bisect good v1.2.0<br/>(was working)"]
+    G --> M["Git checks out the<br/>MIDDLE commit"]
+    M --> T{"Test it: is the<br/>bug present?"}
+    T -- "yes" --> BAD["git bisect bad<br/>→ search earlier half"]
+    T -- "no" --> GOOD["git bisect good<br/>→ search later half"]
+    BAD --> M
+    GOOD --> M
+    M -. "range narrowed to 1" .-> F["🎯 'abc123 is the<br/>first bad commit'"]
+    F --> R["git bisect reset"]
+```
+
 ### Step-by-Step
 
 ```bash
@@ -144,3 +164,11 @@ git log v1.1.0..v1.2.0 --oneline
 # Show commits not yet in main (changes unique to this branch)
 git log main..HEAD --oneline
 ```
+
+---
+
+## References
+
+- [Pro Git — Debugging with Git](https://git-scm.com/book/en/v2/Git-Tools-Debugging-with-Git)
+- [git bisect](https://git-scm.com/docs/git-bisect) · [git blame](https://git-scm.com/docs/git-blame) · [git log](https://git-scm.com/docs/git-log)
+- [The pickaxe (`log -S`) explained](https://git-scm.com/docs/git-log#Documentation/git-log.txt--Sltstringgt)

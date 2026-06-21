@@ -16,6 +16,22 @@ Git reads config in three layers — system → global → local — and later l
 
 Git config has three scopes: `--system` (all users), `--global` (your user account), and local (per-repo, default). Most personal settings go in `--global`.
 
+```mermaid
+flowchart TD
+    SYS["🖥️ --system<br/>all users on machine<br/>(/etc/gitconfig)"] --> GLB["👤 --global<br/>your account<br/>(~/.gitconfig)"]
+    GLB --> LOC["📁 --local<br/>this repo only<br/>(.git/config)"]
+    LOC --> WIN["✅ Value Git actually uses"]
+```
+
+The most specific scope wins: **local overrides global overrides system.** That's how you can set a personal email globally but use your work email in a single work repo.
+
+> **Real-world example:**
+> ```bash
+> git config --global user.email "me@gmail.com"        # default everywhere
+> cd ~/work/project
+> git config --local user.email "me@company.com"       # just this repo
+> ```
+
 ---
 
 ## Identity
@@ -101,3 +117,12 @@ git undo          # undo last commit, keep changes unstaged
 git unstage file  # remove file from staging area
 git aliases       # list all defined aliases
 ```
+
+---
+
+## References
+
+- [Pro Git — First-Time Git Setup](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup)
+- [Pro Git — Git Configuration](https://git-scm.com/book/en/v2/Customizing-Git-Git-Configuration)
+- [git config — official docs](https://git-scm.com/docs/git-config)
+- [GitHub Docs — Set up Git](https://docs.github.com/en/get-started/getting-started-with-git/set-up-git)

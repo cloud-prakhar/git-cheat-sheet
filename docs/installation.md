@@ -92,3 +92,11 @@ git config --global user.email "you@example.com"
 ```
 
 See [Configuration](configuration.md) for full setup options.
+
+---
+
+## References
+
+- [Git — Downloads (all platforms)](https://git-scm.com/downloads)
+- [Pro Git — Installing Git](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git)
+- [GitHub Docs — Set up Git](https://docs.github.com/en/get-started/getting-started-with-git/set-up-git)

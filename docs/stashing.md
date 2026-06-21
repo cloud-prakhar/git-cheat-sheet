@@ -6,10 +6,21 @@ Git won't let you switch branches when you have uncommitted changes that would c
 
 `git stash` gives you a **third option**: save the current state of your working directory and staging area to a temporary stack, revert to a clean state, and restore everything exactly as it was when you're ready to continue. It's the equivalent of putting your work-in-progress into a drawer so you can deal with something urgent on a clean desk.
 
+> **Real-world analogy:** You're cooking a dish but the doorbell rings. You slide the half-prepped ingredients into the fridge (`git stash`), answer the door with clean hands, then take everything back out exactly as it was (`git stash pop`).
+
+```mermaid
+flowchart LR
+    DIRTY["Working Dir<br/>(messy WIP)"] -- "git stash push" --> CLEAN["Working Dir<br/>(clean) ✨"]
+    CLEAN -. "saved on stack" .-> STACK[("📚 Stash stack<br/>stash@{0}<br/>stash@{1}")]
+    STACK -- "git stash pop" --> DIRTY
+```
+
 **Common scenarios:**
 - A critical production bug comes in while you're mid-feature — stash your work, fix the bug on `main`, then pop the stash.
 - You started work on the wrong branch — stash it, switch to the right branch, pop the stash.
 - You want to quickly test the current state of `main` without committing incomplete work.
+
+**Under the hood (the useful mental model):** a stash isn't magic — Git quietly makes *hidden commits* of your changes and stores them on a stack called `refs/stash`. That's why stashes survive branch switches and why each one has a real diff you can inspect with `git stash show -p`. The stack is **last-in-first-out**: `stash@{0}` is always the newest.
 
 ---
 
@@ -117,3 +128,11 @@ git merge hotfix/crash-on-login
 git switch feature/nav
 git stash pop
 ```
+
+---
+
+## References
+
+- [Pro Git — Stashing and Cleaning](https://git-scm.com/book/en/v2/Git-Tools-Stashing-and-Cleaning)
+- [git stash — official docs](https://git-scm.com/docs/git-stash)
+- [Atlassian — git stash tutorial](https://www.atlassian.com/git/tutorials/saving-changes/git-stash)

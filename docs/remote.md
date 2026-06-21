@@ -14,6 +14,62 @@ Remotes enable:
 
 `git fetch` downloads remote changes into your local repo without touching your working directory or branches. `git pull` = `git fetch` + `git merge` (or rebase). Fetching first lets you **inspect** what changed (`git log HEAD..origin/main`) before deciding how to integrate it — useful when you want `--rebase` instead of a merge commit, or when you just want to check if you're behind before starting work.
 
+## How Code Travels Between You and the Remote
+
+```mermaid
+flowchart LR
+    subgraph LOCAL["💻 Your Machine"]
+        WD["Working Directory"]
+        LR["Local Branch<br/>(main)"]
+        RT["Remote-tracking<br/>(origin/main)"]
+    end
+    subgraph REMOTE["☁️ Remote (GitHub/GitLab)"]
+        OR["origin/main"]
+    end
+
+    LR -- "git push" --> OR
+    OR -- "git fetch" --> RT
+    RT -- "git merge / rebase" --> LR
+    OR -- "git pull (= fetch + merge)" --> LR
+```
+
+> **Real-world analogy:** The remote is a **shared Google Drive folder** for your team's code. `push` uploads your work, `fetch` downloads the latest *without* changing your local files yet, and `pull` downloads *and* applies it.
+
+## What Is `origin/main`? (Remote-Tracking Branches)
+
+When you see `origin/main`, that's a **remote-tracking branch** — a local, read-only bookmark that records "where `main` was on the remote the last time I talked to it."
+
+The key insight: **`origin/main` only updates when you `fetch` or `pull`.** It is *not* live. If a teammate pushes while you're offline, your `origin/main` is stale until you fetch again.
+
+So at any moment you actually have three pointers in play:
+
+| Pointer | What it is |
+|---------|-----------|
+| `main` | Your local branch — what *you* have committed |
+| `origin/main` | Your last-known snapshot of the remote's `main` |
+| (the real remote) | The actual `main` on GitHub — only seen via fetch |
+
+```mermaid
+flowchart LR
+    M["main<br/>(your work)"]
+    OM["origin/main<br/>(last fetched)"]
+    REMOTE["GitHub main<br/>(the real one)"]
+    REMOTE -- "git fetch updates →" --> OM
+    OM -. "compare to plan a merge" .- M
+```
+
+> **Real-world analogy:** `origin/main` is a **photo of the remote** you took last time you synced — useful, but it doesn't change just because the real thing did. Run `git fetch` to take a fresh photo.
+
+```bash
+# Refresh your photo of the remote without touching your own work
+git fetch origin
+
+# Now safely compare: what did the team add that I don't have?
+git log main..origin/main --oneline
+```
+
+> 📖 **Go deeper:** [Pro Git — Remote Branches](https://git-scm.com/book/en/v2/Git-Branching-Remote-Branches).
+
 ---
 
 Remotes are named references to repositories hosted elsewhere (GitHub, GitLab, Bitbucket, self-hosted). `origin` is the conventional name for the repo you cloned from.
@@ -138,3 +194,12 @@ git branch -vv
 # ahead N  — you have N commits not yet pushed
 # behind N — remote has N commits not yet pulled
 ```
+
+---
+
+## References
+
+- [Pro Git — Working with Remotes](https://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes)
+- [git fetch](https://git-scm.com/docs/git-fetch) · [git pull](https://git-scm.com/docs/git-pull) · [git push](https://git-scm.com/docs/git-push)
+- [GitHub Docs — About remote repositories](https://docs.github.com/en/get-started/git-basics/about-remote-repositories)
+- [`--force-with-lease` explained](https://git-scm.com/docs/git-push#Documentation/git-push.txt---no-force-with-lease)

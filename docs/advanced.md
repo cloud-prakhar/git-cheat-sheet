@@ -14,6 +14,24 @@ Normally you integrate work by merging an entire branch. But sometimes you need 
 
 Cherry-pick solves exactly this. It copies the *diff* of a commit and applies it as a new commit on your current branch. The original commit stays where it is; you get an independent copy.
 
+> **Real-world analogy:** Like copy-pasting one paragraph from another document into yours — you take just the part you need, not the whole file.
+
+```mermaid
+gitGraph
+    commit id: "A"
+    branch hotfix
+    checkout hotfix
+    commit id: "fix-X"
+    commit id: "fix-Y"
+    checkout main
+    commit id: "B"
+    cherry-pick id: "fix-X"
+```
+
+Above, only `fix-X` is copied onto `main` — `fix-Y` is left behind.
+
+**Theory worth knowing:** cherry-pick *copies* a change — it creates a **new commit with a new hash**, not a move. The original stays put. This is why cherry-picking and then later *merging* the same branch can make the identical change show up **twice** in history. Git usually handles this gracefully, but it's the reason the rule of thumb is "cherry-pick a commit or two; merge/rebase for everything else."
+
 **When to use it:**
 - A bug was fixed on `main` and needs to be **backported** to a `release/1.x` support branch.
 - A colleague's branch has one useful commit you need now, but their PR isn't ready to merge yet.
@@ -79,6 +97,16 @@ git reflog show feature/login
 Normally Git ties you to one working directory per clone. If you're mid-feature and need to check out a different branch — to review a PR, test a hotfix, or run the old version of the app — you either have to stash and switch, or maintain a second full clone (slow, uses double the disk space).
 
 Worktrees let a single clone check out **multiple branches simultaneously**, each in its own directory on disk. Switching context becomes a `cd` instead of a stash + switch cycle. Each worktree shares the same `.git` database — so no duplication of history — but has its own independent working directory and index.
+
+```mermaid
+flowchart TD
+    GIT[(".git database<br/>shared history")]
+    GIT --- W1["📁 repo/<br/>branch: main"]
+    GIT --- W2["📁 ../hotfix/<br/>branch: hotfix/bug"]
+    GIT --- W3["📁 ../review/<br/>branch: pr-42"]
+```
+
+> **Real-world analogy:** One filing cabinet (the `.git` database) with several desks (working directories) pulling from it. You can have a different file open on each desk at once — no need to clear one desk to use another.
 
 **When to use it:**
 - Reviewing a colleague's PR in a separate directory while your own work continues untouched.
@@ -287,3 +315,12 @@ git count-objects -vH
 # Find large files in history
 git rev-list --objects --all | git cat-file --batch-check='%(objecttype) %(objectname) %(objectsize) %(rest)' | sort -k3 -rn | head -10
 ```
+
+---
+
+## References
+
+- [git cherry-pick](https://git-scm.com/docs/git-cherry-pick) · [git worktree](https://git-scm.com/docs/git-worktree)
+- [Pro Git — Submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules)
+- [Git Large File Storage (LFS)](https://git-lfs.com/) · [GitHub Docs — About Git LFS](https://docs.github.com/en/repositories/working-with-files/managing-large-files/about-git-large-file-storage)
+- [BFG Repo-Cleaner](https://rtyley.github.io/bfg-repo-cleaner/) — fast history rewriting for removing secrets/large files

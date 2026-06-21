@@ -22,9 +22,23 @@ Two common Git workflows for working with teams.
 
 Used when you don't have direct write access to a repo — common for open source contributions.
 
+```mermaid
+flowchart LR
+    LOCAL["💻 Local clone"] -- "git push" --> FORK["🍴 Your fork<br/>(origin)"]
+    FORK -- "Pull Request" --> UP["⭐ Upstream repo<br/>(original)"]
+    UP -- "git fetch upstream<br/>(sync latest)" --> LOCAL
 ```
-[upstream repo]  ←  PR  ←  [your fork]  ←  [your local clone]
-```
+
+> **Real-world analogy:** You can't edit someone else's published book directly. So you photocopy it (fork), make your edits on the copy, and mail the author a "please consider these changes" letter (Pull Request). They decide whether to include it.
+
+**`origin` vs `upstream` — the two remotes you'll juggle:** In a fork workflow you have *two* remote repos, and naming them clearly is half the battle:
+
+| Remote | Points to | You use it to |
+|--------|-----------|---------------|
+| `origin` | **Your fork** | `push` your branches (you have write access here) |
+| `upstream` | **The original repo** | `fetch` the latest changes from the maintainers |
+
+The rhythm is: **pull *down* from `upstream`, push *up* to `origin`, then open a PR from `origin` → `upstream`.** You can't push to `upstream` directly — that's the whole point of the fork model.
 
 ### Full Walkthrough
 
@@ -75,8 +89,15 @@ git push origin --delete fix/typo-in-readme
 
 Used within a team that has shared write access to one repo.
 
-```
-[origin/main]  ←  PR / merge  ←  [origin/feature/x]  ←  [local feature/x]
+```mermaid
+flowchart LR
+    A["git switch -c<br/>feature/x"] --> B["commit work"]
+    B --> C["git push -u<br/>origin feature/x"]
+    C --> D["Open Pull Request"]
+    D --> E{"Review +<br/>CI passes?"}
+    E -- "changes requested" --> B
+    E -- "approved ✅" --> F["Merge into main"]
+    F --> G["Delete feature branch"]
 ```
 
 ### Full Walkthrough
@@ -156,3 +177,13 @@ git rebase -i origin/main
 # Push
 git push -u origin feature/your-branch
 ```
+
+---
+
+## References
+
+- [Pro Git — Distributed Workflows](https://git-scm.com/book/en/v2/Distributed-Git-Distributed-Workflows)
+- [Pro Git — Contributing to a Project](https://git-scm.com/book/en/v2/Distributed-Git-Contributing-to-a-Project)
+- [GitHub Flow — official guide](https://docs.github.com/en/get-started/using-github/github-flow)
+- [GitHub Docs — Fork a repo](https://docs.github.com/en/get-started/quickstart/fork-a-repo)
+- [Atlassian — Comparing Git workflows](https://www.atlassian.com/git/tutorials/comparing-workflows)

@@ -1,6 +1,23 @@
 # Git Cheat Sheet
 
-A practical, no-fluff Git reference covering essential commands, workflows, and real-world use cases — from beginners to advanced users.
+A practical, no-fluff Git reference covering essential commands, workflows, and real-world use cases — from beginners to advanced users. Diagrams throughout are written in [Mermaid](https://mermaid.js.org/) and render automatically on GitHub.
+
+---
+
+## The Big Picture
+
+If you remember one diagram about Git, make it this one. Every command you'll learn is really just moving your work between these four places:
+
+```mermaid
+flowchart LR
+    WD["📝 Working Directory<br/>your files"] -- "git add" --> SA["📦 Staging Area<br/>next commit"]
+    SA -- "git commit" --> LR["🗄️ Local Repo<br/>your history"]
+    LR -- "git push" --> RR["☁️ Remote Repo<br/>shared (GitHub)"]
+    RR -- "git fetch / pull" --> LR
+    LR -- "git checkout / restore" --> WD
+```
+
+**The mental model:** You *edit* files (Working Directory), *choose* what to save (Staging Area), *save* it permanently (Local Repo), and *share* it with your team (Remote Repo). New to Git? Read the docs in table order — each builds on the previous.
 
 ---
 

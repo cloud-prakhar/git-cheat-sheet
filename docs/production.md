@@ -78,9 +78,20 @@ git tag -v v1.0.0
 
 ### Trunk-Based Development (recommended for CI/CD teams)
 
-```
-main  ──●──●──●──●──●──●──  (always deployable)
-         └──● feature (short-lived, merged in < 2 days)
+```mermaid
+gitGraph
+    commit
+    branch feature
+    checkout feature
+    commit
+    checkout main
+    merge feature tag: "deploy"
+    commit
+    branch feature2
+    checkout feature2
+    commit
+    checkout main
+    merge feature2 tag: "deploy"
 ```
 
 - One long-lived branch: `main`.
@@ -92,13 +103,24 @@ main  ──●──●──●──●──●──●──  (always depl
 
 ### Gitflow (for teams with scheduled releases)
 
-```
-main        ──────────────────●────────────────●──
-                              ↑ v1.0           ↑ v1.1
-release/1.0     ──────────●──●
-                          ↑ RC
-develop     ──●──●──●──●──●──●──●──●──●──●──●──
-               └──● feature/x
+```mermaid
+gitGraph
+    commit tag: "v1.0"
+    branch develop
+    checkout develop
+    commit
+    branch feature/x
+    checkout feature/x
+    commit
+    checkout develop
+    merge feature/x
+    branch release/1.1
+    checkout release/1.1
+    commit id: "RC fix"
+    checkout main
+    merge release/1.1 tag: "v1.1"
+    checkout develop
+    merge release/1.1
 ```
 
 - `main` — only ever contains tagged releases.
@@ -277,6 +299,18 @@ git push origin v2.1.1
 
 When a critical bug is found in production:
 
+```mermaid
+flowchart TD
+    A["🔥 Bug found in prod (v2.1.0)"] --> B["Branch from the TAG<br/>git switch -c hotfix/v2.1.1 v2.1.0"]
+    B --> C["Apply minimal fix + commit"]
+    C --> D["Tag v2.1.1 & push<br/>→ deploy pipeline"]
+    D --> E["Merge fix back into main"]
+    E --> F["Merge fix back into develop/trunk"]
+    F --> G["Delete hotfix branch"]
+```
+
+> **Why branch from the tag, not `main`?** `main` may already contain unreleased work. Branching from the exact released tag guarantees your fix ships *only* the bug fix — nothing half-finished sneaks into production.
+
 ```bash
 # 1. Branch from the production tag, not from develop or main-head
 git switch -c hotfix/v2.1.1 v2.1.0
@@ -355,3 +389,13 @@ git log --merges --first-parent main --oneline
 # Verify all commits on main are signed
 git log --show-signature main | grep -E "^(commit|gpg:)"
 ```
+
+---
+
+## References
+
+- [GitHub Docs — About protected branches](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/about-protected-branches)
+- [GitHub Docs — Signing commits](https://docs.github.com/en/authentication/managing-commit-signature-verification/signing-commits)
+- [Trunk-Based Development](https://trunkbaseddevelopment.com/) · [A successful Git branching model (Gitflow)](https://nvie.com/posts/a-successful-git-branching-model/)
+- [git-filter-repo](https://github.com/newren/git-filter-repo) · [gitleaks](https://github.com/gitleaks/gitleaks) · [pre-commit framework](https://pre-commit.com/)
+- [Conventional Commits](https://www.conventionalcommits.org/) · [Semantic Versioning](https://semver.org/)

@@ -12,6 +12,22 @@ Mistakes happen at different stages of the Git workflow — you might catch an e
 
 The key principle: **rewriting history (`reset`, `rebase`) is only safe before you've shared the commits**. Once commits are on a shared branch, use `revert` to undo safely — it adds to history rather than changing it, so no one else's clone breaks.
 
+## Which Undo Tool Do I Need?
+
+Use this decision tree to pick the right command for your situation:
+
+```mermaid
+flowchart TD
+    Q1{Have you<br/>committed yet?}
+    Q1 -- "No, just edited files" --> Q2{Staged the changes?}
+    Q2 -- "No" --> R1["git restore &lt;file&gt;<br/>(discard edits)"]
+    Q2 -- "Yes" --> R2["git restore --staged &lt;file&gt;<br/>(unstage, keep edits)"]
+    Q1 -- "Yes, committed" --> Q3{Already pushed to<br/>a shared branch?}
+    Q3 -- "No (local only)" --> R3["git reset HEAD~1<br/>(rewrite history — safe)"]
+    Q3 -- "Yes (others may have it)" --> R4["git revert &lt;commit&gt;<br/>(new undo commit — safe)"]
+    Q1 -- "Disaster! Lost a commit/branch" --> R5["git reflog<br/>(find it and recover)"]
+```
+
 ---
 
 Git gives you several tools to undo work — each with different scope and safety characteristics.
@@ -53,6 +69,14 @@ git restore --staged .
 
 Moves the branch pointer backward. Use only on **local, unpushed** commits.
 
+**The mental model:** remember the three areas from [Basics](basics.md) — Repository, Staging Area, Working Directory. `reset` moves your branch pointer back, then optionally "rewinds" those areas to match. The mode just decides **how many areas** it rewinds:
+
+- `--soft` → rewinds only the commit. Your changes stay **staged**, ready to re-commit. *(Great for "I committed too early, let me redo the message/commit.")*
+- `--mixed` (default) → also unstages. Changes stay in your files but are **unstaged**. *(Great for "uncommit and let me re-pick what to stage.")*
+- `--hard` → also wipes your files. Everything is **gone**. *(Use with care — this is the destructive one.)*
+
+> **Real-world analogy:** All three modes hit "undo" on the commit. `--soft` keeps your draft on the desk, `--mixed` puts it back in the drawer, `--hard` throws it in the shredder.
+
 ```bash
 # --soft: undo commit, keep changes staged
 git reset --soft HEAD~1
@@ -74,11 +98,41 @@ git reset --hard a1b2c3
 | `--mixed` | Undone | Staged changes unstaged | Untouched |
 | `--hard` | Undone | Cleared | Cleared |
 
+**How far back each mode "rewinds":**
+
+```mermaid
+flowchart LR
+    subgraph hard["--hard (destructive)"]
+        direction TB
+        h1[Repo] --> h2[Staging] --> h3[Working Dir]
+    end
+    subgraph mixed["--mixed (default)"]
+        direction TB
+        m1[Repo] --> m2[Staging]
+    end
+    subgraph soft["--soft (gentlest)"]
+        direction TB
+        s1[Repo]
+    end
+```
+
+Think of it as: `--soft` only undoes the commit, `--mixed` also unstages, `--hard` also wipes your edits. The further right you go, the more you lose — so `--hard` is the one to be careful with.
+
 ---
 
 ## git revert — Undo Commits Safely
 
 Creates a new commit that reverses the changes of a previous commit. **Safe for shared branches** — it doesn't rewrite history.
+
+**`reset` vs `revert` in one picture:** `reset` *deletes* history by moving the branch pointer back. `revert` *adds* a new commit that cancels out the old one — nothing is erased, so collaborators are never surprised.
+
+```mermaid
+gitGraph
+    commit id: "A"
+    commit id: "B-bug"
+    commit id: "C"
+    commit id: "Revert-B" type: HIGHLIGHT
+```
 
 ```bash
 # Revert the most recent commit
@@ -137,3 +191,12 @@ Reflog entries expire after 90 days (default). Act quickly if you need to recove
 | Unstage a file | `git restore --staged file.txt` |
 | Undo a pushed commit | `git revert HEAD` |
 | Find a lost commit | `git reflog` |
+
+---
+
+## References
+
+- [Pro Git — Undoing Things](https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things)
+- [Pro Git — Reset Demystified](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) (deep dive on `--soft`/`--mixed`/`--hard`)
+- [git restore](https://git-scm.com/docs/git-restore) · [git reset](https://git-scm.com/docs/git-reset) · [git revert](https://git-scm.com/docs/git-revert) · [git reflog](https://git-scm.com/docs/git-reflog)
+- [Atlassian — Undoing Changes](https://www.atlassian.com/git/tutorials/undoing-changes)

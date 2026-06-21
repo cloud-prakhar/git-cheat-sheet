@@ -18,6 +18,49 @@ Explore what changed, when, by whom, and why.
 
 ---
 
+## How to Point at Any Commit
+
+Before filtering history, you need a way to *name* commits. You rarely type full 40-character hashes — Git gives you shorthand that works in almost every command (`log`, `diff`, `show`, `reset`, `rebase`, …).
+
+| Reference | Means |
+|-----------|-------|
+| `HEAD` | The commit you're currently on |
+| `HEAD~1` or `HEAD~` | One commit **back** (the parent) |
+| `HEAD~3` | Three commits back |
+| `HEAD^` | The parent (same as `HEAD~1` for normal commits) |
+| `HEAD^2` | The **second** parent — only meaningful on a merge commit |
+| `a1b2c3d` | A specific commit by its (short) hash |
+| `main`, `v1.2.0` | The commit a branch or tag points to |
+
+```mermaid
+flowchart RL
+    H["HEAD"] --> P1["HEAD~1<br/>(HEAD^)"] --> P2["HEAD~2"] --> P3["HEAD~3"]
+```
+
+> **Real-world analogy:** `HEAD~2` is like saying "two pages back from where my bookmark is" — you don't need the page number, just count backward from where you are.
+
+### Selecting a *range* of commits: `..` vs `...`
+
+This trips up almost everyone. The difference matters constantly:
+
+- `A..B` → commits reachable from **B but not A**. Read it as *"what's in B that isn't in A yet."*
+- `A...B` → commits in **either** branch but **not both** (the symmetric difference).
+
+```bash
+# "What's on the remote that I don't have locally?"
+git log main..origin/main --oneline
+
+# "What have I done on my branch that isn't on main yet?"
+git log main..HEAD --oneline
+
+# "Where did these two branches diverge?" (everything unique to either side)
+git log main...feature/login --oneline --left-right
+```
+
+> 📖 **Go deeper:** [Pro Git — Revision Selection](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection) covers every way to name commits and ranges.
+
+---
+
 ## git log
 
 ```bash
@@ -99,6 +142,19 @@ git show a1b2c3:src/auth.js
 
 ## git diff
 
+**What does `git diff` compare?** The plain command and `--staged` look at *different pairs* of areas. This trips up beginners constantly:
+
+```mermaid
+flowchart LR
+    WD["Working Directory"] -- "git diff" --> SA["Staging Area"]
+    SA -- "git diff --staged" --> REPO["Last Commit (HEAD)"]
+    WD -- "git diff HEAD" --> REPO
+```
+
+- `git diff` → "what have I changed but **not staged** yet?"
+- `git diff --staged` → "what's **staged** and about to be committed?"
+- `git diff HEAD` → "**everything** different from the last commit."
+
 ```bash
 # Unstaged changes (working directory vs index)
 git diff
@@ -154,3 +210,11 @@ git blame -C src/auth.js
 a1b2c3ef (Prakhar Gupta 2024-03-10 14:22:01 +0530 42) const token = jwt.sign(payload, secret);
 ^commit   ^author        ^date                    ^line ^content
 ```
+
+---
+
+## References
+
+- [Pro Git — Viewing the Commit History](https://git-scm.com/book/en/v2/Git-Basics-Viewing-the-Commit-History)
+- [git log](https://git-scm.com/docs/git-log) · [git diff](https://git-scm.com/docs/git-diff) · [git show](https://git-scm.com/docs/git-show) · [git blame](https://git-scm.com/docs/git-blame)
+- [Understanding `..` vs `...` in Git ranges](https://git-scm.com/book/en/v2/Git-Tools-Revision-Selection#_commit_ranges)
