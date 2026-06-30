@@ -1,12 +1,24 @@
 # Git Cheat Sheet
 
-A practical, no-fluff Git reference covering essential commands, workflows, and real-world use cases — from beginners to advanced users. Diagrams throughout are written in [Mermaid](https://mermaid.js.org/) and render automatically on GitHub.
+A practical, structured Git reference that reads like a course — from installing Git to running it safely in production. Every topic follows the same teaching template (what it is, why it matters, a plain-English analogy, the technical detail, a real-world example, a diagram, the commands, practice tasks, common mistakes, troubleshooting, and best practices), so you can learn linearly or jump straight to a command.
+
+Diagrams throughout are written in [Mermaid](https://mermaid.js.org/) and render automatically on GitHub.
+
+---
+
+## Who This Is For
+
+- **Beginners** who want to understand Git, not just memorize commands.
+- **Working developers** who need a fast, reliable reference for day-to-day tasks.
+- **Teams** standardizing on branching strategies, signing, and release practices.
+
+No prior Git knowledge is assumed for Module 00; each module builds on the previous one.
 
 ---
 
 ## The Big Picture
 
-If you remember one diagram about Git, make it this one. Every command you'll learn is really just moving your work between these four places:
+If you remember one diagram about Git, make it this one. Every command moves your work between these four places:
 
 ```mermaid
 flowchart LR
@@ -17,28 +29,41 @@ flowchart LR
     LR -- "git checkout / restore" --> WD
 ```
 
-**The mental model:** You *edit* files (Working Directory), *choose* what to save (Staging Area), *save* it permanently (Local Repo), and *share* it with your team (Remote Repo). New to Git? Read the docs in table order — each builds on the previous.
+**The mental model:** you *edit* files (Working Directory), *choose* what to save (Staging Area), *save* it permanently (Local Repo), and *share* it with your team (Remote Repo).
 
 ---
 
-## Topics
+## Learning Path
 
-| # | Topic | What's inside |
-|---|-------|---------------|
-| 1 | [Installation](docs/installation.md) | Windows & Linux install methods |
-| 2 | [Configuration](docs/configuration.md) | User setup, editor, credentials, aliases |
-| 3 | [Basics](docs/basics.md) | init, clone, status, stage, commit |
-| 4 | [Branching & Merging](docs/branching.md) | create, switch, merge, conflict resolution |
-| 5 | [Rebasing](docs/rebasing.md) | basic rebase, interactive rebase, squashing |
-| 6 | [Remote Operations](docs/remote.md) | fetch, pull, push, tracking, force-push |
-| 7 | [Stashing](docs/stashing.md) | stash, pop, apply, list, drop |
-| 8 | [History & Diffing](docs/history.md) | log filters, diff, blame, show |
-| 9 | [Undoing Changes](docs/undoing.md) | restore, reset, revert, reflog |
-| 10 | [Tags](docs/tags.md) | lightweight, annotated, push, delete |
-| 11 | [Debugging](docs/debugging.md) | bisect, blame, log -S, log -L |
-| 12 | [Workflows](docs/workflows.md) | fork/PR flow, feature branch flow |
-| 13 | [Advanced](docs/advanced.md) | cherry-pick, worktrees, submodules, one-liners |
-| 14 | [Production Best Practices](docs/production.md) | branch protection, signing, secrets, hotfix, release tagging |
+```mermaid
+flowchart LR
+    A[00–02<br/>Setup & Basics] --> B[03–06<br/>Branches, Rebase,<br/>Remotes, Stash]
+    B --> C[07–10<br/>History, Undo,<br/>Tags, Debug]
+    C --> D[11–13<br/>Workflows, Advanced,<br/>Production]
+```
+
+---
+
+## Modules
+
+| # | Module | What's Inside |
+|---|--------|---------------|
+| 00 | [Installation](00-installation/) | Windows & Linux install methods, verifying the install |
+| 01 | [Configuration](01-configuration/) | User setup, editor, credentials, aliases |
+| 02 | [Basics](02-basics/) | init, clone, status, stage, commit; the three trees |
+| 03 | [Branching & Merging](03-branching-and-merging/) | branches, fast-forward vs `--no-ff`, conflict resolution |
+| 04 | [Rebasing](04-rebasing/) | basic rebase, interactive rebase, squashing |
+| 05 | [Remote Operations](05-remote-operations/) | fetch, pull, push, tracking branches, force-push |
+| 06 | [Stashing](06-stashing/) | stash, pop, apply, list, drop |
+| 07 | [History & Diffing](07-history-and-diffing/) | log filters, diff, blame, show |
+| 08 | [Undoing Changes](08-undoing-changes/) | restore, reset, revert, reflog |
+| 09 | [Tags](09-tags/) | lightweight & annotated tags, push, delete |
+| 10 | [Debugging](10-debugging/) | bisect, blame, log -S, log -L |
+| 11 | [Collaboration Workflows](11-workflows/) | fork/PR flow, feature-branch flow |
+| 12 | [Advanced](12-advanced/) | cherry-pick, worktrees, submodules, LFS, one-liners |
+| 13 | [Production Best Practices](13-production/) | branch protection, signing, secrets, hotfix, release tagging |
+| — | [Diagrams](diagrams/) | Every Mermaid diagram in one visual reference |
+| — | [References](references/) | Official docs, standards, per-module reading list, learning resources |
 
 ---
 
@@ -68,39 +93,39 @@ flowchart LR
 
 ---
 
-## References & Resources
+## How to Use This Repo
 
-### 📐 Standards & Specifications
+- **Learning from scratch?** Start at [Module 00](00-installation/) and follow the Next links in each nav footer.
+- **Need a specific command?** Jump to the module in the table above; each topic file's **Commands** section is copy-paste ready.
+- **Want the visuals?** See [Diagrams](diagrams/) for every Mermaid diagram collected in one place.
+- **Going deeper?** The [References](references/) section links the official docs and a per-module reading list.
 
-| | Resource | Description |
-|---|----------|-------------|
-| 📝 | [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) | Specification for commit message format (`feat:`, `fix:`, `chore:`, etc.) |
-| 🔀 | [Semantic Versioning (SemVer)](https://semver.org/) | Version numbering standard used with git tags (MAJOR.MINOR.PATCH) |
-| 🔑 | [SSH Key Setup — GitHub Docs](https://docs.github.com/en/authentication/connecting-to-github-with-ssh) | Official guide for SSH authentication with GitHub |
+Each module folder contains a `README.md` (overview, learning flow, practice, revision) and a topic file with the full 14-section breakdown.
 
-### 📖 Official Documentation
+---
 
-| | Resource | Description |
-|---|----------|-------------|
-| 📘 | [Git Official Docs](https://git-scm.com/doc) | Complete reference manual and command docs |
-| 📗 | [Pro Git Book](https://git-scm.com/book/en/v2) | Free, comprehensive book covering Git from basics to internals |
-| 🐙 | [GitHub Docs](https://docs.github.com) | GitHub-specific workflows, Actions, and API reference |
-| 🦊 | [GitLab Docs](https://docs.gitlab.com) | GitLab CI/CD, merge requests, and platform guides |
+## Contributing
 
-### 🛠️ Tools & Utilities
+- All content is Markdown; code blocks use the ` ```bash ` language tag.
+- Keep each topic file self-contained and follow the 14-section template.
+- Add new commands to the appropriate existing module; new major topics get a new numbered module folder + a row in the table above.
+- Update the nav footers (Prev / Up / Next) when adding or reordering modules.
 
-| | Resource | Description |
-|---|----------|-------------|
-| 🖥️ | [GitLens (VS Code)](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens) | Supercharged Git integration inside VS Code |
-| 🌳 | [Sourcetree](https://www.sourcetreeapp.com/) | Free visual Git client for macOS and Windows |
-| 🔍 | [git-extras](https://github.com/tj/git-extras) | Extra git commands (`git undo`, `git summary`, `git changelog`, etc.) |
-| 🧹 | [BFG Repo Cleaner](https://rtyley.github.io/bfg-repo-cleaner/) | Fast alternative to `git filter-branch` for removing secrets/large files |
-| 📊 | [git-standup](https://github.com/kamranahmedse/git-standup) | Recall what you (or your team) committed last working day |
+---
 
-### 🎮 Interactive Learning
+## References
 
-| | Resource | Description |
-|---|----------|-------------|
-| 🌐 | [Learn Git Branching](https://learngitbranching.js.org/) | Visual, interactive git branching tutorials in the browser |
-| 🎯 | [Oh My Git!](https://ohmygit.org/) | Open-source game for learning Git visually |
-| 🧩 | [Git Katas](https://github.com/eficode-academy/git-katas) | Hands-on git exercises for deliberate practice |
+- [Pro Git Book (free)](https://git-scm.com/book/en/v2) · [Git Official Docs](https://git-scm.com/doc)
+- [Conventional Commits](https://www.conventionalcommits.org/) · [Semantic Versioning](https://semver.org/)
+- [Learn Git Branching](https://learngitbranching.js.org/) (interactive)
+- Full list in [references/](references/).
+
+<!-- NAV-FOOTER -->
+
+---
+
+### 🧭 Navigation
+
+| Previous | Up | Next |
+|:---|:---:|---:|
+| ⬅️ Prev: — | ⬆️ Home: [Git Cheat Sheet](README.md) | ➡️ Next: [Module 00 — Installation](00-installation/README.md) |
